@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selenium-chrome-arm64
+  labels:
+    app: "selenium-chrome"
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: "selenium-chrome"
+  template:
+    metadata:
+      labels:
+        app: "selenium-chrome"
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                      - arm64
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+              - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - "selenium-chrome"
+                topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: selenium-chrome-arm64
+          image: deinchristian/rpi-selenium-node-chrome
+          ports:
+            - containerPort: 5555
+          env:
+            - name: HUB_HOST
+              value: "selenium-hub-selenium-hub.devops"
+            - name: HUB_PORT
+              value: "4444"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selenium-firefox-arm64
+  labels:
+    app: selenium-firefox
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: selenium-firefox
+  template:
+    metadata:
+      labels:
+        app: selenium-firefox
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+             - matchExpressions:
+                - key: kubernetes.io/arch
+                  operator: In
+                  values:
+                    - arm64
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+              - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - "selenium-firefox"
+                topologyKey: "kubernetes.io/hostname"
+      containers:
+        - name: selenium-chrome-arm64
+          image: deinchristian/rpi-selenium-node-firefox
+          ports:
+            - containerPort: 5555
+          env:
+            - name: HUB_HOST
+              value: "selenium-hub-selenium-hub.devops"
+            - name: HUB_PORT
+              value: "4444"
