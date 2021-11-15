@@ -4,7 +4,7 @@ global:
   ## hub, chrome, firefox, chromeDebug and firefoxDebug
   ## can also be specified at chart level see below
   nodeSelector:
-    kubernetes.io/arch: amd64
+    kubernetes.io/arch: arm64
   #  label: value
   ## Configure HostAliases
   hostAliases: []
@@ -21,11 +21,11 @@ global:
 hub:
   ## The repository and image
   ## ref: https://hub.docker.com/r/selenium/hub/
-  image: "selenium/hub"
+  image: "voight/selenium-hub"
 
   ## The tag for the image
   ## ref: https://hub.docker.com/r/selenium/hub/tags/
-  tag: "3.141.59"
+  tag: "latest"
 
   ## imagePullSecrets is the secret to use to pull the image from in case of a private flavour image
   # imagePullSecrets: "regcred"
@@ -105,7 +105,7 @@ hub:
 
   ## The LoadBalancer IP Address
   ## ref: https://kubernetes.io/docs/user-guide/services/
-  ServiceLoadBalancerIP: "192.168.137.74"
+  ServiceLoadBalancerIP: "192.168.137.79"
   # loadBalancerSourceRanges: []
 
   ## Control where client requests go, to the same pod or round-robin
@@ -154,18 +154,18 @@ hub:
 
 chrome:
   ## Enable the creation of a node-chrome pod
-  enabled: false
+  enabled: true
 
   ## DaemonSet instead of Deployment
   runAsDaemonSet: false
 
   ## The repository and image
   ## ref: https://hub.docker.com/r/selenium/node-chrome/
-  image: "selenium/node-chrome"
+  image: "voight/selenium-node-chrome"
 
   ## The tag for the image
   ## ref: https://hub.docker.com/r/selenium/node-chrome/tags/
-  tag: "3.141.59"
+  tag: "1.0"
 
   ## imagePullSecrets is the secret to use to pull the image from in case of a private flavour image
   # imagePullSecrets: "regcred"
@@ -175,7 +175,7 @@ chrome:
   pullPolicy: "IfNotPresent"
 
   ## The number of pods in the deployment. This is ignored if runAsDaemonSet is enabled.
-  replicas: 1
+  replicas: 5
 
   ## When true will add a liveness check to the pod
   enableLivenessProbe: false
@@ -367,18 +367,18 @@ chromeDebug:
 
 firefox:
   ## Enable the creation of a node-firefox pod
-  enabled: false
+  enabled: true
 
   ## DaemonSet instead of Deployment
   runAsDaemonSet: false
 
   ## The repository and image
   ## ref: https://hub.docker.com/r/selenium/node-firefox/
-  image: "selenium/node-firefox"
+  image: "voight/selenium-node-firefox"
 
   ## The tag for the image
   ## ref: https://hub.docker.com/r/selenium/node-firefox/tags/
-  tag: "3.141.59"
+  tag: "1.0"
 
   ## imagePullSecrets is the secret to use to pull the image from in case of a private flavour image
   # imagePullSecrets: "regcred"
@@ -388,7 +388,7 @@ firefox:
   pullPolicy: "IfNotPresent"
 
   ## The number of pods in the deployment. This is ignored if runAsDaemonSet is enabled.
-  replicas: 1
+  replicas: 5
 
   ## When true will add a liveness check to the pod
   enableLivenessProbe: false

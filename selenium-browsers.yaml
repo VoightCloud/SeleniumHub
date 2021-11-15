@@ -35,7 +35,7 @@ spec:
                 topologyKey: "kubernetes.io/hostname"
       containers:
         - name: selenium-chrome-arm64
-          image: deinchristian/rpi-selenium-node-chrome
+          image: voight/selenium-node-chrome
           ports:
             - containerPort: 5555
           env:
@@ -81,7 +81,7 @@ spec:
                 topologyKey: "kubernetes.io/hostname"
       containers:
         - name: selenium-chrome-arm64
-          image: deinchristian/rpi-selenium-node-firefox
+          image: voight/selenium-node-firefox
           ports:
             - containerPort: 5555
           env:
