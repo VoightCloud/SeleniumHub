@@ -1,0 +1,9 @@
+- name: Install Selenium Hub
+  hosts: localhost
+  connection: local
+
+  vars:
+    namespace: devops
+
+  roles:
+    - selenium-hub

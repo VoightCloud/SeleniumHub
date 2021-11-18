@@ -1,0 +1,44 @@
+- name: Install Openshift Python Library
+  command: pip3 install openshift
+
+- name: Install Ansible Galaxy Kubernetes
+  command: ansible-galaxy collection install community.kubernetes
+
+- name: Install Stable repos
+  kubernetes.core.helm_repository:
+    name: stable
+    repo_url: "https://charts.helm.sh/stable"
+
+- name: Update helm repos
+  command: helm repo update
+
+- name: Create namespace
+  kubernetes.core.k8s:
+    name: "{{ namespace }}"
+    api_version: v1
+    kind: namespace
+    state: present
+
+- name: Apply Selenium-hub
+  kubernetes.core.helm:
+    name: "{{ deployment }}"
+    chart_ref: stable/selenium
+    release_namespace: "{{ namespace }}"
+    release_values:
+      hub:
+        image: "voight/selenium-hub"
+        tag: "{{ tag }}"
+        ServiceLoadBalancerIP: "{{ loadBalancerIP }}"
+        affinity: "{{ hubAffinity }}"
+      chrome:
+        enabled: true
+        image: "voight/selenium-node-chrome"
+        tag: "{{ tag }}"
+        replicas: "{{ replicas }}"
+        affinity: "{{ chromeAffinity }}"
+      firefox:
+        enabled: true
+        image: "voight/selenium-node-firefox"
+        tag: "{{ tag }}"
+        replicas: "{{ replicas }}"
+        affinity: "{{ firefoxAffinity }}"
